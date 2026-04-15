@@ -1,0 +1,77 @@
+/* reset margin dan padding bawaan browser */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: sans-serif;
+}
+
+/* mengatur tampilan navigasi atas */
+nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px 5%;
+    background-color: #ce1212; /* warna merah khas skomda */
+    color: white;
+}
+
+nav ul {
+    display: flex;
+    list-style: none;
+}
+
+nav ul li a {
+    color: white;
+    text-decoration: none;
+    margin-left: 20px;
+}
+
+/* mengatur tata letak katalog menu */
+.container-menu {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 20px;
+    padding: 40px 5%;
+}
+
+/* membuat kartu menu (card) */
+.card {
+    border: 1px solid #ddd;
+    padding: 15px;
+    border-radius: 10px;
+    text-align: center;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+}
+
+.card img {
+    border-radius: 8px;
+    margin-bottom: 10px;
+}
+
+.card h3 {
+    margin: 10px 0;
+    font-size: 1.2rem;
+}
+
+.card p {
+    color: #ce1212;
+    font-weight: bold;
+    margin-bottom: 15px;
+}
+
+/* tombol pesan sekarang */
+.card a {
+    display: block;
+    background-color: #ce1212;
+    color: white;
+    text-decoration: none;
+    padding: 10px;
+    border-radius: 5px;
+}
+
+footer {
+    text-align: center;
+    padding: 20px;
+    background-color: #f4f4f4;
+}
