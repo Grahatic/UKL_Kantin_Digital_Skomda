@@ -34,6 +34,7 @@ if (isset($_POST['masuk'])) {
             echo "<script>alert('selamat datang siswa!'); window.location='index.php';</script>";
         }
     } else { 
+        
         // kasih peringatan kalau username atau password salah
         echo "<script>alert('login gagal! periksa kembali akun anda');</script>";
     }
@@ -41,20 +42,30 @@ if (isset($_POST['masuk'])) {
 ?>
 
 <!DOCTYPE html>
-<html>
+<html lang="id">
 <head>
-    <title>Login - Kantin Skomda</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login - Kantin Pre-Order Skomda</title>
+    <link rel="stylesheet" href="assets/css/style.css">
 </head>
-<body>
-    <h2>Login Kantin</h2>
-    <form method="POST"> 
-        <label>Username</label><br>
-        <input type="text" name="user" required><br><br>
+<body class="login-page">
+
+    <div class="login-container">
+        <img src="assets/img/logo 1.svg" alt="Logo Skomda" class="login-logo">
         
-        <label>Password</label><br>
-        <input type="password" name="pass" required><br><br>
-        
-        <button type="submit" name="masuk">Login Sekarang</button>
-    </form>
+        <h2 class="login-title">Kantin Pre-Order</h2>
+
+        <form action="" method="POST" class="login-form">
+    <div class="input-group">
+        <input type="text" name="user" placeholder="Username" required>
+    </div>
+    <div class="input-group">
+        <input type="password" name="pass" placeholder="Password" required>
+    </div>
+    <button type="submit" name="masuk" class="btn-login">Login</button>
+</form>
+    </div>
+
 </body>
 </html>

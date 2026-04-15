@@ -1,66 +1,83 @@
 <?php
+
+// Memulai session untuk mengakses data login pengguna
 session_start();
+
+// Menghubungkan file ke database agar bisa manipulasi data
 include '../config/koneksi.php';
 
-// proteksi: kalau bukan admin, tendang ke login
+// Mengecek apakah user yang masuk memiliki hak akses sebagai admin
 if ($_SESSION['role'] != "admin") {
+    
+    // Jika bukan admin, arahkan kembali ke halaman login
     header("location:../login.php");
+    
+    // Menghentikan seluruh eksekusi script agar kode di bawahnya tidak berjalan
     exit;
 }
 ?>
+
 <!DOCTYPE html>
-<html>
+<html lang="id">
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Admin Dashboard - Kantin Skomda</title>
     <link rel="stylesheet" href="../assets/css/style.css">
 </head>
 <body>
-    <nav>
-        <h1>DASHBOARD - ADMIN</h1>
-        <ul>
-            <li><a href="dashboard.php">kelola menu</a></li>
-            <li><a href="../logout.php">logout</a></li>
-        </ul>
-        <span>Admin: <?php echo $_SESSION['username']; ?></span>
-    </nav>
+    
+    <nav class="main-nav">
+    <div class="nav-brand">
+        <h1>SKOMDA KANTIN</h1>
+    </div>
+    <div class="nav-menu">
+        <a href="dashboard.php" class="nav-link">Kelola Menu</a>
+        <span class="admin-name">Admin: <strong><?php echo $_SESSION['username']; ?></strong></span>
+        <a href="../logout.php" class="btn-logout">Logout</a>
+    </div>
+</nav>
 
-    <section style="padding: 40px 5%;">
-        <h2>Daftar Menu Kantin</h2>
-        <br>
-        <a href="tambah_menu.php" style="background: green; color: white; padding: 10px; text-decoration: none; border-radius: 5px;">+ tambah menu baru</a>
-        <br><br>
+    <div class="admin-container">
+        
+        <div class="admin-header">
+            <h2>Daftar Menu Kantin</h2>
+            <a href="tambah_menu.php" class="btn-tambah">+ tambah menu baru</a>
+        </div>
 
-        <table border="1" cellpadding="10" cellspacing="0" width="100%">
+        <table class="admin-table">
             <thead>
-                <tr style="background: #f4f4f4;">
-                    <th>no</th>
-                    <th>gambar</th>
-                    <th>nama menu</th>
-                    <th>harga</th>
-                    <th>opsi</th>
+                <tr>
+                    <th>No</th>
+                    <th>Gambar</th>
+                    <th>Nama Menu</th>
+                    <th>Harga</th>
+                    <th>Opsi</th>
                 </tr>
             </thead>
             <tbody>
                 <?php
+                // Ambil data dari database (Gunakan variabel koneksi lu: $conn)
+                $ambildata = mysqli_query($conn, "SELECT * FROM menu");
                 $no = 1;
-                $query = mysqli_query($conn, "SELECT * FROM menu");
-                while ($d = mysqli_fetch_array($query)) {
-                    ?>
-                    <tr>
-                        <td><?php echo $no++; ?></td>
-                        <td><img src="../assets/img/<?php echo $d['gambar']; ?>" width="50"></td>
-                        <td><?php echo $d['nama_menu']; ?></td>
-                        <td>Rp <?php echo number_format($d['harga']); ?></td>
-                        <td>
-                            <a href="edit_menu.php?id=<?php echo $d['id_menu']; ?>">edit</a> | 
-                            <a href="hapus_menu.php?id=<?php echo $d['id_menu']; ?>" onclick="return confirm('yakin mau hapus?')">hapus</a>
-                        </td>
-                    </tr>
-                    <?php
-                }
+                while($data = mysqli_fetch_array($ambildata)){
                 ?>
+                <tr>
+                    <td><?php echo $no++; ?></td>
+                    <td>
+                        <img src="../assets/img/<?php echo $data['gambar']; ?>" alt="gambar menu">
+                    </td>
+                    <td><?php echo $data['nama_menu']; ?></td>
+                    <td>Rp <?php echo number_format($data['harga'], 0, ',', '.'); ?></td>
+                    <td>
+                        <a href="edit_menu.php?id=<?php echo $data['id_menu']; ?>" class="link-edit">Edit</a>
+                        <a href="hapus_menu.php?id=<?php echo $data['id_menu']; ?>" class="link-hapus" onclick="return confirm('Yakin ingin hapus?')">Hapus</a>
+                    </td>
+                </tr>
+                <?php } ?>
             </tbody>
         </table>
-    </section>
+    </div>
+
 </body>
 </html>
