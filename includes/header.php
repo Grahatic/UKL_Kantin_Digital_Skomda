@@ -25,7 +25,7 @@ if (!isset($_SESSION['status'])) {
 </head>
 
 <body>
-    <nav style="background-color: #d9534f; padding: 15px 5%; display: flex; justify-content: space-between; align-items: center; color: white;">
+    <nav style="background-color: #ce1212; padding: 15px 5%; display: flex; justify-content: space-between; align-items: center; color: white;">
         <h1 style="margin: 0; font-size: 1.5rem;">DASHBOARD ADMIN</h1>
         <div>
             <a href="dashboard.php" style="color: white; text-decoration: none; margin-right: 20px;">Kelola Menu</a>
