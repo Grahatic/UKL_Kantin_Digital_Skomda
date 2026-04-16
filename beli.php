@@ -1,6 +1,6 @@
 <?php
 
-// memulai session untuk mengambil id_user yang login
+// memulai session untukk mengakses data login pengguna
 session_start();
 
 // panggil koneksi database
@@ -25,8 +25,7 @@ if ($hasil) {
     // jika berhasil, lempar user ke halaman keranjang
     echo "<script>alert('berhasil ditambah ke keranjang'); window.location='keranjang.php';</script>";
 } else {
-    
+
     // jika gagal, kasih peringatan dan balik ke index
     echo "<script>alert('gagal menambah pesanan'); window.location='index.php';</script>";
 }
-?>

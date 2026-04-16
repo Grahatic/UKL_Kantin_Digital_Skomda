@@ -1,55 +1,55 @@
 <?php
 
-// Memulai session untuk mengakses data login pengguna
+// memulai session untuk mengakses data login pengguna
 session_start();
 
-// Menghubungkan file ke database agar bisa manipulasi data
+// menghubungkan file ke database
 include '../config/koneksi.php';
 
-// Proteksi: kalau bukan admin, tendang ke login
+// proteksi
 if ($_SESSION['role'] != "admin") {
 
-    // Arahkan paksa kembali ke halaman login
+    // arahkan paksa kembali ke halaman login
     header("location:../login.php");
 
-    // Menghentikan seluruh eksekusi script agar kode di bawahnya tidak berjalan
+    // menghentikan proses
     exit;
 }
 
-// Mengecek apakah tombol 'simpan' sudah diklik oleh admin
+// mengecek apakah tombol 'simpan' sudah diklik
 if (isset($_POST['simpan'])) {
-    
-    // Mengamankan input teks dari karakter berbahaya
+
+    // mengamankan input teks
     $nama   = mysqli_real_escape_string($conn, $_POST['nama']);
 
-    // Menangkap input harga dari form
+    // menangkap input harga dari form
     $harga  = $_POST['harga'];
 
-    // Menangkap nama file gambar yang diunggah
-    $gambar = $_FILES['foto']['name']; 
+    // menangkap nama file gambar yang diunggah
+    $gambar = $_FILES['foto']['name'];
 
-    // Menangkap lokasi sementara file gambar di server
+    // menangkap lokasi sementara file gambar di server
     $tmp    = $_FILES['foto']['tmp_name'];
 
-    // Proses upload file gambar ke folder assets/img
-    if (move_uploaded_file($tmp, "../assets/img/".$gambar)) {
-        
-        // Menjalankan query untuk menyimpan data menu baru ke database
+    // proses upload file gambar ke folder assets/img
+    if (move_uploaded_file($tmp, "../assets/img/" . $gambar)) {
+
+        // menjalankan query untuk menyimpan data menu baru ke database
         $query = mysqli_query($conn, "INSERT INTO menu (nama_menu, harga, gambar) VALUES ('$nama', '$harga', '$gambar')");
 
-        // Memberikan feedback sukses atau gagal kepada user
+        // memberikan feedback
         if ($query) {
 
-            // Jika berhasil, munculkan alert dan pindah ke dashboard
+            // jika berhasil, munculkan alert dan pindah ke dashboard
             echo "<script>alert('Menu berhasil ditambah!'); window.location='dashboard.php';</script>";
         } else {
 
-            // Jika gagal simpan ke database, munculkan alert error
+            // jika gagal simpan ke database, munculkan alert error
             echo "<script>alert('Gagal simpan ke database!');</script>";
         }
     } else {
-        
-        // Jika gagal upload file ke folder, munculkan alert error
+
+        // jika gagal upload file ke folder, munculkan alert error
         echo "<script>alert('Gagal upload gambar!');</script>";
     }
 }
@@ -57,13 +57,15 @@ if (isset($_POST['simpan'])) {
 
 <!DOCTYPE html>
 <html lang="id">
+
 <head>
     <meta charset="UTF-8">
     <title>Tambah Menu Baru - Admin Skomda</title>
     <link rel="stylesheet" href="../assets/css/style.css">
 </head>
+
 <body>
-    
+
     <nav class="main-nav">
         <div class="nav-brand">
             <h1>SKOMDA KANTIN</h1>
@@ -81,7 +83,7 @@ if (isset($_POST['simpan'])) {
                 <h2>Tambah Menu Baru</h2>
                 <p>Gunakan gambar rasio 1:1 untuk hasil terbaik di katalog siswa.</p>
             </div>
-            
+
             <form method="POST" enctype="multipart/form-data">
                 <div class="input-group">
                     <label>Nama Menu</label>
@@ -107,4 +109,5 @@ if (isset($_POST['simpan'])) {
     </div>
 
 </body>
+
 </html>

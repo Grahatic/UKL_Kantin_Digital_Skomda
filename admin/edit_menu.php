@@ -1,67 +1,80 @@
 <?php
-// Memulai session untuk mengakses data login pengguna
+
+// memulai session untuk mengakses data login pengguna
 session_start();
 
-// Menghubungkan file ke database agar bisa manipulasi data
+// menghubungkan file ke database
 include '../config/koneksi.php';
 
-// Proteksi: kalau bukan admin, tendang ke login
+// proteksi
 if ($_SESSION['role'] != "admin") {
-    // Arahkan paksa kembali ke halaman login
+
+    // arahkan paksa kembali ke halaman login
     header("location:../login.php");
-    // Menghentikan seluruh eksekusi script agar kode di bawahnya tidak berjalan
+
+    // menghentikan proses
     exit;
 }
 
-// Membersihkan ID dari URL untuk mencegah serangan SQL Injection
+// membersihkan ID dari URL
 $id = mysqli_real_escape_string($conn, $_GET['id']);
 
-// Mengambil data menu spesifik berdasarkan ID yang dikirim
+// mengambil data menu spesifik berdasarkan ID yang dikirim
 $ambil_data = mysqli_query($conn, "SELECT * FROM menu WHERE id_menu='$id'");
 
-// Memecah hasil query menjadi array agar bisa ditampilkan di form
+// mmemecah hasil query menjadi array
 $d = mysqli_fetch_array($ambil_data);
 
-// Cek apakah data ada; jika tidak, kembalikan ke dashboard
+// cek apakah data ada jika tidak, kembalikan ke dashboard
 if (!$d) {
-    // Memberikan pesan peringatan jika ID tidak ditemukan
+
+    // memberikan pesan peringatan jika ID tidak ditemukan
     echo "<script>alert('Data tidak ditemukan!'); window.location='dashboard.php';</script>";
-    // Menghentikan proses karena data tidak valid
+
+    // menghentikan proses
     exit;
 }
 
-// Mengecek apakah tombol 'update' sudah diklik oleh admin
+// Mengecek apakah tombol 'update' sudah diklik
 if (isset($_POST['update'])) {
-    // Mengamankan input teks dari karakter berbahaya
+
+    // mengamankan input teks
     $nama   = mysqli_real_escape_string($conn, $_POST['nama']);
-    // Menangkap input harga dari form
+
+    // menangkap input harga dari form
     $harga  = $_POST['harga'];
-    
-    // Menangkap nama file gambar yang diunggah
+
+    // menangkap nama file gambar yang diunggah
     $gambar = $_FILES['foto']['name'];
-    // Menangkap lokasi sementara file gambar di server
+
+    // menangkap lokasi sementara file gambar di server
     $tmp    = $_FILES['foto']['tmp_name'];
 
-    // Logika: Cek apakah admin mengunggah file gambar baru atau tidak
+    // cek apakah admin mengunggah file gambar baru atau tidak
     if ($gambar != "") {
-        // Proses upload file gambar ke folder assets/img
-        move_uploaded_file($tmp, "../assets/img/".$gambar);
-        // Query update yang menyertakan nama file gambar baru
+
+        // proses upload file gambar
+        move_uploaded_file($tmp, "../assets/img/" . $gambar);
+
+        // query update yang menyertakan nama file gambar baru
         $query = "UPDATE menu SET nama_menu='$nama', harga='$harga', gambar='$gambar' WHERE id_menu='$id'";
     } else {
-        // Query update tanpa mengganti gambar (pakai gambar lama)
+
+        // query update tanpa mengganti gambar
         $query = "UPDATE menu SET nama_menu='$nama', harga='$harga' WHERE id_menu='$id'";
     }
 
-    // Menjalankan perintah update ke database
+    // menjalankan perintah update ke database
     $hasil = mysqli_query($conn, $query);
 
-    // Memberikan feedback sukses atau gagal kepada user
+    // memberikan feedback sukses atau gagal kepada user
     if ($hasil) {
-        // Jika berhasil, munculkan alert dan pindah ke dashboard
+
+        // jika berhasil, munculkan alert dan pindah ke dashboard
         echo "<script>alert('Data menu berhasil diupdate!'); window.location='dashboard.php';</script>";
     } else {
-        // Jika gagal, munculkan alert error
+
+        // jika gagal, munculkan alert error
         echo "<script>alert('Gagal update menu!');</script>";
     }
 }
@@ -69,13 +82,15 @@ if (isset($_POST['update'])) {
 
 <!DOCTYPE html>
 <html lang="id">
+
 <head>
     <meta charset="UTF-8">
     <title>Edit Menu - Admin Skomda</title>
     <link rel="stylesheet" href="../assets/css/style.css">
 </head>
+
 <body>
-    
+
     <nav class="main-nav">
         <div class="nav-brand">
             <h1>SKOMDA KANTIN</h1>
@@ -93,7 +108,7 @@ if (isset($_POST['update'])) {
                 <h2>Edit Menu</h2>
                 <p>Ubah detail menu sesuai kebutuhan stok atau harga baru.</p>
             </div>
-            
+
             <form method="POST" enctype="multipart/form-data">
                 <div class="input-group">
                     <label>Nama Menu</label>
@@ -121,4 +136,5 @@ if (isset($_POST['update'])) {
     </div>
 
 </body>
+
 </html>

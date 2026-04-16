@@ -1,16 +1,19 @@
 <?php
-// Memulai session untuk mengakses data login pengguna jika belum berjalan
+
+// memulai session untuk mengakses data login pengguna
 if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
 ?>
 <!DOCTYPE html>
 <html lang="id">
+
 <head>
     <meta charset="UTF-8">
     <title>Kantin Skomda</title>
     <link rel="stylesheet" href="assets/css/style.css">
 </head>
+
 <body>
     <nav class="main-nav">
         <div class="nav-brand">

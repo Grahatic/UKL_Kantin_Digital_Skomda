@@ -1,426 +1,444 @@
-/* ============================================================
-   1. GLOBAL STYLES (NAV, CARD SISWA, LOGIN)
-   ============================================================ */
+/*---1. (NAV, CARD SISWA, LOGIN)---*/
 
 /* reset margin dan padding bawaan browser */
 * {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-    font-family: sans-serif;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: sans-serif;
 }
 
 /* mengatur tampilan navigasi atas */
 nav {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 20px 5%;
-    background-color: #ce1212; /* warna merah khas skomda */
-    color: white;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px 5%;
+  background-color: #ce1212;
+  color: white;
 }
 
 nav ul {
-    display: flex;
-    list-style: none;
+  display: flex;
+  list-style: none;
 }
 
 nav ul li a {
-    color: white;
-    text-decoration: none;
-    margin-left: 20px;
+  color: white;
+  text-decoration: none;
+  margin-left: 20px;
 }
 
-/* mengatur tata letak katalog menu (UNTUK SISWA) */
+/* mengatur tata letak katalog menu */
 .container-menu {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-    gap: 20px;
-    padding: 40px 5%;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 20px;
+  padding: 40px 5%;
 }
 
-/* membuat kartu menu (card) */
+/* membuat card menu */
 .card {
-    border: 1px solid #ddd;
-    padding: 15px;
-    border-radius: 10px;
-    text-align: center;
-    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+  border: 1px solid #ddd;
+  padding: 15px;
+  border-radius: 10px;
+  text-align: center;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  -webkit-border-radius: 10px;
+  -moz-border-radius: 10px;
+  -ms-border-radius: 10px;
+  -o-border-radius: 10px;
 }
 
 .card img {
-    border-radius: 8px;
-    margin-bottom: 10px;
-    width: 100%; /* Biar seragam */
-    height: 150px;
-    object-fit: cover;
+  border-radius: 8px;
+  margin-bottom: 10px;
+  width: 100%;
+  height: 150px;
+  object-fit: cover;
 }
 
 .card h3 {
-    margin: 10px 0;
-    font-size: 1.2rem;
+  margin: 10px 0;
+  font-size: 1.2rem;
 }
 
 .card p {
-    color: #ce1212;
-    font-weight: bold;
-    margin-bottom: 15px;
+  color: #ce1212;
+  font-weight: bold;
+  margin-bottom: 15px;
 }
 
 /* tombol pesan sekarang */
 .card a {
-    display: block;
-    background-color: #ce1212;
-    color: white;
-    text-decoration: none;
-    padding: 10px;
-    border-radius: 5px;
+  display: block;
+  background-color: #ce1212;
+  color: white;
+  text-decoration: none;
+  padding: 10px;
+  border-radius: 5px;
+  -webkit-border-radius: 5px;
+  -moz-border-radius: 5px;
+  -ms-border-radius: 5px;
+  -o-border-radius: 5px;
 }
 
 footer {
-    text-align: center;
-    padding: 20px;
-    background-color: #f4f4f4;
+  text-align: center;
+  padding: 20px;
+  background-color: #f4f4f4;
 }
 
-/* ============================================================
-   2. LOGIN PAGE STYLES (TIDAK DISENTUH)
-   ============================================================ */
+/*---2. LOGIN PAGE---*/
 
 .login-page {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
-    margin: 0;
-    background-color: #1E1E1E; 
-    font-family: Arial, sans-serif;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  margin: 0;
+  background-color: #1e1e1e;
+  font-family: Arial, sans-serif;
 }
 
 .login-container {
-    background-color: white;
-    padding: 3rem;
-    border-radius: 12px;
-    box-shadow: 0 4px 15px rgba(0,0,0,0.3);
-    width: 380px;
-    text-align: center;
+  background-color: white;
+  padding: 3rem;
+  border-radius: 12px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+  width: 380px;
+  text-align: center;
 }
 
 .login-logo {
-    width: 140px; 
-    height: auto;
-    margin-bottom: 1rem;
+  width: 140px;
+  height: auto;
+  margin-bottom: 1rem;
 }
 
 .login-title {
-    color: #333;
-    font-size: 1.5rem;
-    margin-bottom: 2rem;
-    font-weight: 600;
+  color: #333;
+  font-size: 1.5rem;
+  margin-bottom: 2rem;
+  font-weight: 600;
 }
 
 .login-form .input-group {
-    margin-bottom: 1.2rem;
+  margin-bottom: 1.2rem;
 }
 
 .login-form input {
-    width: 100%;
-    padding: 12px;
-    border: 1px solid #DDD;
-    border-radius: 6px;
-    background-color: #F9F9F9;
-    font-size: 1rem;
+  width: 100%;
+  padding: 12px;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  background-color: #f9f9f9;
+  font-size: 1rem;
 }
 
 .btn-login {
-    width: 100%;
-    padding: 12px;
-    background-color: #da322c; 
-    color: white;
-    border: none;
-    border-radius: 6px;
-    font-weight: bold;
-    cursor: pointer;
-    transition: background 0.3s;
+  width: 100%;
+  padding: 12px;
+  background-color: #da322c;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background 0.3s;
 }
 
-/* ============================================================
-   3. DASHBOARD ADMIN STYLES (BARU)
-   ============================================================ */
+/*---3. DAHBOARD ADMIN--- */
 
 .admin-container {
-    padding: 30px 5%;
+  padding: 30px 5%;
 }
 
 .admin-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 25px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 25px;
 }
 
-/* Tabel Kelola Menu */
+/* tabel kelola menu */
 .admin-table {
-    width: 100%;
-    border-collapse: collapse;
-    background: white;
-    border-radius: 10px;
-    overflow: hidden;
-    box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+  width: 100%;
+  border-collapse: collapse;
+  background: white;
+  border-radius: 10px;
+  overflow: hidden;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
 }
 
 .admin-table th {
-    background-color: #ce1212;
-    color: white;
-    padding: 15px;
-    text-align: left;
+  background-color: #ce1212;
+  color: white;
+  padding: 15px;
+  text-align: left;
 }
 
 .admin-table td {
-    padding: 15px;
-    border-bottom: 1px solid #eee;
+  padding: 15px;
+  border-bottom: 1px solid #eee;
 }
 
 .admin-table img {
-    width: 80px;
-    height: 60px;
-    object-fit: cover;
-    border-radius: 6px;
+  width: 80px;
+  height: 60px;
+  object-fit: cover;
+  border-radius: 6px;
 }
 
-/* Link Aksi */
-.link-edit { color: #f0ad4e; font-weight: bold; text-decoration: none; margin-right: 15px; }
-.link-hapus { color: #ce1212; font-weight: bold; text-decoration: none; }
+/* link aksi */
+.link-edit {
+  color: #f0ad4e;
+  font-weight: bold;
+  text-decoration: none;
+  margin-right: 15px;
+}
+.link-hapus {
+  color: #ce1212;
+  font-weight: bold;
+  text-decoration: none;
+}
 
 .btn-tambah {
-    background-color: #28a745;
-    color: white;
-    padding: 10px 20px;
-    text-decoration: none;
-    border-radius: 6px;
-    font-weight: bold;
+  background-color: #28a745;
+  color: white;
+  padding: 10px 20px;
+  text-decoration: none;
+  border-radius: 6px;
+  font-weight: bold;
 }
 
-/* ============================================================
-   FIX NAVBAR ADMIN
-   ============================================================ */
+/*---4. NAVBAR ADMIN---*/
 .main-nav {
-    display: flex;
-    justify-content: space-between; /* Menjauhkan brand ke kiri dan menu ke kanan */
-    align-items: center;
-    padding: 15px 5%;
-    background-color: #ce1212; /* Merah Skomda */
-    color: white;
-    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 15px 5%;
+  background-color: #ce1212;
+  color: white;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
 }
 
 .nav-brand h1 {
-    font-size: 1.4rem;
-    letter-spacing: 1px;
-    font-weight: 800;
+  font-size: 1.4rem;
+  letter-spacing: 1px;
+  font-weight: 800;
 }
 
 .nav-menu {
-    display: flex;
-    align-items: center;
-    gap: 25px; /* Jarak antar elemen di menu */
+  display: flex;
+  align-items: center;
+  gap: 25px;
 }
 
 .nav-link {
-    color: white;
-    text-decoration: none;
-    font-weight: 500;
-    transition: 0.3s;
+  color: white;
+  text-decoration: none;
+  font-weight: 500;
+  transition: 0.3s;
 }
 
-.nav-link:hover { opacity: 0.8; }
+.nav-link:hover {
+  opacity: 0.8;
+}
 
 .admin-name {
-    font-size: 0.9rem;
-    background: rgba(255,255,255,0.1);
-    padding: 5px 12px;
-    border-radius: 20px;
+  font-size: 0.9rem;
+  background: rgba(255, 255, 255, 0.1);
+  padding: 5px 12px;
+  border-radius: 20px;
 }
 
 .btn-logout {
-    background-color: white;
-    color: #ce1212;
-    padding: 8px 18px;
-    text-decoration: none;
-    border-radius: 6px;
-    font-weight: bold;
-    font-size: 0.85rem;
-    transition: 0.3s;
+  background-color: white;
+  color: #ce1212;
+  padding: 8px 18px;
+  text-decoration: none;
+  border-radius: 6px;
+  font-weight: bold;
+  font-size: 0.85rem;
+  transition: 0.3s;
 }
 
 .btn-logout:hover {
-    background-color: #f4f4f4;
-    transform: translateY(-2px);
+  background-color: #f4f4f4;
+  transform: translateY(-2px);
 }
 
-/* ============================================================
-   STYLING FORM TAMBAH/EDIT MENU
-   ============================================================ */
+/*---5. FORM TAMBAH/EDIT MENU---*/
 .form-card {
-    background: white;
-    max-width: 600px;
-    margin: 20px auto;
-    padding: 30px;
-    border-radius: 12px;
-    box-shadow: 0 5px 20px rgba(0,0,0,0.08);
+  background: white;
+  max-width: 600px;
+  margin: 20px auto;
+  padding: 30px;
+  border-radius: 12px;
+  box-shadow: 0 5px 20px rgba(0, 0, 0, 0.08);
 }
 
 .form-header {
-    margin-bottom: 25px;
-    border-bottom: 2px solid #f4f4f4;
-    padding-bottom: 15px;
+  margin-bottom: 25px;
+  border-bottom: 2px solid #f4f4f4;
+  padding-bottom: 15px;
 }
 
-.form-header h2 { color: #333; margin-bottom: 5px; }
-.form-header p { color: #777; font-size: 0.9rem; }
+.form-header h2 {
+  color: #333;
+  margin-bottom: 5px;
+}
+.form-header p {
+  color: #777;
+  font-size: 0.9rem;
+}
 
-.input-group { margin-bottom: 20px; }
+.input-group {
+  margin-bottom: 20px;
+}
 
 .input-group label {
-    display: block;
-    margin-bottom: 8px;
-    font-weight: bold;
-    color: #555;
-    font-size: 0.9rem;
+  display: block;
+  margin-bottom: 8px;
+  font-weight: bold;
+  color: #555;
+  font-size: 0.9rem;
 }
 
 .input-group input {
-    width: 100%;
-    padding: 12px;
-    border: 1px solid #ddd;
-    border-radius: 8px;
-    font-size: 1rem;
-    transition: 0.3s;
+  width: 100%;
+  padding: 12px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  font-size: 1rem;
+  transition: 0.3s;
 }
 
 .input-group input:focus {
-    border-color: #ce1212;
-    outline: none;
-    box-shadow: 0 0 8px rgba(206, 18, 18, 0.1);
+  border-color: #ce1212;
+  outline: none;
+  box-shadow: 0 0 8px rgba(206, 18, 18, 0.1);
 }
 
 .form-actions {
-    display: flex;
-    gap: 15px;
-    margin-top: 30px;
+  display: flex;
+  gap: 15px;
+  margin-top: 30px;
 }
 
 .btn-simpan {
-    background: #ce1212;
-    color: white;
-    border: none;
-    padding: 12px 25px;
-    border-radius: 8px;
-    font-weight: bold;
-    cursor: pointer;
-    flex: 2;
-    transition: 0.3s;
+  background: #ce1212;
+  color: white;
+  border: none;
+  padding: 12px 25px;
+  border-radius: 8px;
+  font-weight: bold;
+  cursor: pointer;
+  flex: 2;
+  transition: 0.3s;
 }
 
-.btn-simpan:hover { background: #b00f0f; transform: translateY(-2px); }
+.btn-simpan:hover {
+  background: #b00f0f;
+  transform: translateY(-2px);
+}
 
 .btn-kembali {
-    background: #f4f4f4;
-    color: #666;
-    text-align: center;
-    text-decoration: none;
-    padding: 12px 20px;
-    border-radius: 8px;
-    flex: 1;
-    font-size: 0.9rem;
+  background: #f4f4f4;
+  color: #666;
+  text-align: center;
+  text-decoration: none;
+  padding: 12px 20px;
+  border-radius: 8px;
+  flex: 1;
+  font-size: 0.9rem;
 }
 
-/* Styling Preview Gambar Saat Edit */
+/* preview gambar */
 .img-preview {
-    display: block;
-    margin: 10px 0;
-    border-radius: 10px;
-    border: 2px solid #f4f4f4;
-    object-fit: cover;
-    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+  display: block;
+  margin: 10px 0;
+  border-radius: 10px;
+  border: 2px solid #f4f4f4;
+  object-fit: cover;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
 }
 
-/* ============================================================
-   KATALOG MENU (USER SIDE)
-   ============================================================ */
+/*---6. KATALOG MENU---*/
 .main-content {
-    padding: 50px 0;
-    background-color: #f8f9fa;
+  padding: 50px 0;
+  background-color: #f8f9fa;
 }
 
 .section-title {
-    text-align: center;
-    margin-bottom: 40px;
+  text-align: center;
+  margin-bottom: 40px;
 }
 
 .section-title h2 {
-    font-size: 2rem;
-    color: #333;
-    margin-bottom: 10px;
+  font-size: 2rem;
+  color: #333;
+  margin-bottom: 10px;
 }
 
-/* Mengatur tata letak kartu menu secara otomatis */
+/* mengatur tata letak card menu */
 .menu-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-    gap: 30px;
-    padding: 0 5%;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 30px;
+  padding: 0 5%;
 }
 
 .menu-card {
-    background: white;
-    border-radius: 15px;
-    overflow: hidden;
-    box-shadow: 0 10px 25px rgba(0,0,0,0.05);
-    transition: transform 0.3s ease;
+  background: white;
+  border-radius: 15px;
+  overflow: hidden;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.05);
+  transition: transform 0.3s ease;
 }
 
 .menu-card:hover {
-    transform: translateY(-10px); /* Efek melayang saat kursor di atas kartu */
+  transform: translateY(-10px); /* Efek melayang saat kursor di atas kartu */
 }
 
 .menu-image img {
-    width: 100%;
-    height: 200px;
-    object-fit: cover; /* Memastikan gambar tidak gepeng */
+  width: 100%;
+  height: 200px;
+  object-fit: cover; /* Memastikan gambar tidak gepeng */
 }
 
 .menu-info {
-    padding: 20px;
-    text-align: center;
+  padding: 20px;
+  text-align: center;
 }
 
 .menu-info h3 {
-    font-size: 1.2rem;
-    margin-bottom: 10px;
-    color: #333;
+  font-size: 1.2rem;
+  margin-bottom: 10px;
+  color: #333;
 }
 
 .menu-info .price {
-    display: block;
-    font-size: 1.1rem;
-    font-weight: bold;
-    color: #ce1212; /* Warna merah identitas Skomda */
-    margin-bottom: 20px;
+  display: block;
+  font-size: 1.1rem;
+  font-weight: bold;
+  color: #ce1212; /* Warna merah identitas Skomda */
+  margin-bottom: 20px;
 }
 
 .btn-pesan {
-    display: inline-block;
-    width: 100%;
-    padding: 12px;
-    background-color: #ce1212;
-    color: white;
-    text-decoration: none;
-    border-radius: 8px;
-    font-weight: bold;
-    transition: 0.3s;
+  display: inline-block;
+  width: 100%;
+  padding: 12px;
+  background-color: #ce1212;
+  color: white;
+  text-decoration: none;
+  border-radius: 8px;
+  font-weight: bold;
+  transition: 0.3s;
 }
 
 .btn-pesan:hover {
-    background-color: #333;
+  background-color: #333;
 }

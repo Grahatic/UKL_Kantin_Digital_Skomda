@@ -1,9 +1,9 @@
 <?php
 
-// Memulai session dan proteksi halaman melalui header
+// memulai session dan proteksi halaman melalui header
 include 'includes/header_siswa.php';
 
-// Menghubungkan file ke database agar bisa manipulasi data
+// menghubungkan file ke database
 include 'config/koneksi.php';
 ?>
 
@@ -13,14 +13,14 @@ include 'config/koneksi.php';
             <h2>Mau Makan Apa Hari Ini?</h2>
             <p>Pilih menu favoritmu dari Kantin Skomda</p>
         </div>
-        
+
         <div class="menu-grid">
             <?php
-            // Mengambil data semua menu dari database secara urut dari yang terbaru
+            // mengambil data semua menu dari database secara urut dari yang terbaru
             $query = mysqli_query($conn, "SELECT * FROM menu ORDER BY id_menu DESC");
-            
-            // Melakukan looping untuk menampilkan setiap data menu ke dalam bentuk kartu
-            while($d = mysqli_fetch_array($query)){
+
+            // melakukan looping untuk menampilkan setiap data menu ke dalam bentuk card
+            while ($d = mysqli_fetch_array($query)) {
             ?>
                 <div class="menu-card">
                     <div class="menu-image">
@@ -38,6 +38,7 @@ include 'config/koneksi.php';
 </main>
 
 <?php
-// Memanggil file footer untuk menutup struktur HTML halaman siswa
+
+// memanggil file footer
 include 'includes/footer.php';
 ?>

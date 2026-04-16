@@ -1,8 +1,9 @@
 <?php
+
 // memulai session dan proteksi halaman melalui header khusus siswa
 include 'includes/header_siswa.php';
 
-// menghubungkan file ke database agar bisa manipulasi data
+// menghubungkan file ke database
 include 'config/koneksi.php';
 
 // menangkap ID user yang sedang login dari session untuk filter keranjang
@@ -12,7 +13,7 @@ $id_user = $_SESSION['id_user'];
 <section style="padding: 40px 5%; min-height: 60vh;">
     <div class="container">
         <h2>Keranjang Belanja Kamu</h2><br>
-        
+
         <table border="1" cellpadding="10" cellspacing="0" width="100%" style="border-collapse: collapse;">
             <thead>
                 <tr style="background-color: #ce1212; color: white;">
@@ -24,12 +25,13 @@ $id_user = $_SESSION['id_user'];
             </thead>
             <tbody>
                 <?php
+
                 // mengambil data keranjang yang di-join dengan tabel menu untuk mendapatkan nama dan harga
                 $query = "SELECT keranjang.*, menu.nama_menu, menu.harga 
                           FROM keranjang 
                           JOIN menu ON keranjang.id_menu = menu.id_menu 
                           WHERE keranjang.id_user = '$id_user'";
-                
+
                 $sql = mysqli_query($conn, $query);
                 $total = 0;
 
@@ -39,14 +41,14 @@ $id_user = $_SESSION['id_user'];
                     $subtotal = $data['harga'] * $data['qty'];
                     // menambahkan subtotal ke variabel total bayar
                     $total += $subtotal;
-                    ?>
+                ?>
                     <tr>
                         <td><?php echo $data['nama_menu']; ?></td>
                         <td>Rp <?php echo number_format($data['harga'], 0, ',', '.'); ?></td>
                         <td align="center"><?php echo $data['qty']; ?></td>
                         <td>Rp <?php echo number_format($subtotal, 0, ',', '.'); ?></td>
                     </tr>
-                    <?php
+                <?php
                 }
                 ?>
             </tbody>
@@ -68,6 +70,7 @@ $id_user = $_SESSION['id_user'];
 </section>
 
 <?php
-// memanggil file footer untuk menutup struktur HTML
+
+// memanggil file footer
 include 'includes/footer.php';
 ?>
