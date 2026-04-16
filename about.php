@@ -152,7 +152,7 @@
             <p class="sub">X-SIJA-1 | Full Stack Developer</p>
 
             <div class="bio">
-                "Berfokus pada pengembangan sistem informasi yang efisien untuk mendukung digitalisasi ekosistem sekolah melalui solusi automasi."
+                "Berfokus pada pengembangan sistem informasi yang efisien untuk mendukung digitalisasi sekolah melalui solusi automasi."
             </div>
 
             <div class="tech-stack">
