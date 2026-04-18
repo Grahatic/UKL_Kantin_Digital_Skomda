@@ -368,7 +368,7 @@ footer {
 /*---6. KATALOG MENU---*/
 .main-content {
   padding: 50px 0;
-  background-color: #f8f9fa;
+  background-color: #f2f2f2;
 }
 
 .section-title {
@@ -385,27 +385,41 @@ footer {
 /* mengatur tata letak card menu */
 .menu-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
   gap: 30px;
   padding: 0 5%;
+  justify-content: start;
 }
 
+/* mengatur tampilan kartu menu */
 .menu-card {
   background: white;
   border-radius: 15px;
   overflow: hidden;
   box-shadow: 0 10px 25px rgba(0, 0, 0, 0.05);
   transition: transform 0.3s ease;
+  max-width: 320px;
+  width: 100%;
 }
 
 .menu-card:hover {
-  transform: translateY(-10px); /* Efek melayang saat kursor di atas kartu */
+  transform: translateY(-10px);
 }
 
 .menu-image img {
   width: 100%;
-  height: 200px;
-  object-fit: cover; /* Memastikan gambar tidak gepeng */
+  /* coba naikkan sedikit tingginya biar lebih lega */
+  height: 250px;
+  /* tetap pakai cover tapi kita arahkan ke tengah */
+  object-fit: cover;
+  object-position: center;
+  /* tambahkan transisi halus saat dihover */
+  transition: 0.5s;
+}
+
+/* tambahan: kasih sedikit zoom pas card dihover biar kelihatan pro */
+.menu-card:hover .menu-image img {
+  transform: scale(1.1);
 }
 
 .menu-info {
@@ -423,7 +437,7 @@ footer {
   display: block;
   font-size: 1.1rem;
   font-weight: bold;
-  color: #ce1212; /* Warna merah identitas Skomda */
+  color: #ce1212;
   margin-bottom: 20px;
 }
 
@@ -441,4 +455,34 @@ footer {
 
 .btn-pesan:hover {
   background-color: #333;
+}
+
+/* style untuk filter stand */
+.btn-filter {
+  padding: 10px 25px;
+  background: #e0e0e0;
+  color: #333;
+  text-decoration: none;
+  border-radius: 50px;
+  font-weight: bold;
+  font-size: 0.9rem;
+  transition: 0.3s;
+  white-space: nowrap;
+}
+
+.btn-filter.active,
+.btn-filter:hover {
+  background: #ce1212;
+  color: white;
+}
+
+/* penyesuaian menu card agar lebih mirip figma */
+.menu-card {
+  border: none;
+  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.05);
+}
+
+.menu-info h3 {
+  font-weight: 700;
+  margin-bottom: 5px;
 }

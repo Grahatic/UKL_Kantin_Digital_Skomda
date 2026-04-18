@@ -31,7 +31,7 @@ if ($_SESSION['role'] != "admin") {
 
     <nav class="main-nav">
         <div class="nav-brand">
-            <h1>SKOMDA KANTIN</h1>
+            <h1>DASHBOARD - ADMIN</h1>
         </div>
         <div class="nav-menu">
             <a href="dashboard.php" class="nav-link">Kelola Menu</a>
@@ -79,6 +79,8 @@ if ($_SESSION['role'] != "admin") {
                 <?php } ?>
             </tbody>
         </table>
+
+        <br>
     </div>
 
 </body>

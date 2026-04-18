@@ -11,7 +11,7 @@ if (isset($_POST['masuk'])) {
 
     // ambil data dari inputan form
     $username = $_POST['user'];
-    $password = $_POST['pass'];
+    $password = md5($_POST['pass']);
 
     // cari data user di database yang cocok dengan inputan
     $query = "SELECT * FROM user WHERE username='$username' AND password='$password'";
@@ -67,7 +67,10 @@ if (isset($_POST['masuk'])) {
                 <input type="password" name="pass" placeholder="Password" required>
             </div>
             <button type="submit" name="masuk" class="btn-login">Login</button>
-        </form>
+            <p style="margin-top: 20px; font-size: 0.9rem; color: #666; text-align: center;">
+                Belum punya akun? <a href="register.php" style="color: #ce1212; text-decoration: none; font-weight: bold;">Daftar di sini</a>
+            </p>
+        </form> 
     </div>
 
 </body>

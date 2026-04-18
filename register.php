@@ -3,19 +3,30 @@
 include "config/koneksi.php";
 
 if (isset($_POST['register'])) {
-    $nama     = $_POST['nama'];
-    $username = $_POST['username'];
+
+    // mengambil data dan mencegah karakter aneh masuk ke database
+    $username = mysqli_real_escape_string($conn, $_POST['username']);
     $password = md5($_POST['password']);
-    $email    = $_POST['email'];
-    $level    = 'siswa';
+    $role     = 'siswa';
 
-    $sql = mysqli_query($koneksi, "INSERT INTO user (nama, username, password, email, level) 
-           VALUES ('$nama', '$username', '$password', '$email', '$level')");
-
-    if ($sql) {
-        echo "<script>alert('Registrasi Berhasil! Silakan Login.'); location.href='login.php';</script>";
+    // cek dulu apakah username sudah pernah dipakai orang lain
+    $cek_user = mysqli_query($conn, "SELECT * FROM user WHERE username='$username'");
+    
+    if (mysqli_num_rows($cek_user) > 0) {
+        // jika username sudah ada di database
+        echo "<script>alert('username sudah ada, cari yang lain!');</script>";
     } else {
-        echo "<script>alert('Registrasi Gagal!');</script>";
+        // jika username aman, langsung masukkan ke database
+        $sql = mysqli_query($conn, "INSERT INTO user (username, password, role) 
+               VALUES ('$username', '$password', '$role')");
+
+        if ($sql) {
+            // jika berhasil, tendang ke halaman login
+            echo "<script>alert('registrasi berhasil! silakan login.'); location.href='login.php';</script>";
+        } else {
+            // jika gagal karena sistem error
+            echo "<script>alert('registrasi gagal!');</script>";
+        }
     }
 }
 ?>
@@ -28,11 +39,10 @@ if (isset($_POST['register'])) {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Register | Kantin Pre-Order Skomda</title>
     <style>
-        /* background */
+        /* styling dasar buat halaman register */
         body {
             font-family: 'Segoe UI', sans-serif;
             background-color: #212529;
-            /* Dark theme sesuai login */
             display: flex;
             justify-content: center;
             align-items: center;
@@ -40,7 +50,7 @@ if (isset($_POST['register'])) {
             margin: 0;
         }
 
-        /* container putih di tengah */
+        /* kotak putih di tengah */
         .register-container {
             background-color: #fff;
             padding: 40px;
@@ -51,7 +61,6 @@ if (isset($_POST['register'])) {
             text-align: center;
         }
 
-        /* tyling logo */
         .logo {
             width: 120px;
             margin-bottom: 10px;
@@ -63,7 +72,6 @@ if (isset($_POST['register'])) {
             font-size: 24px;
         }
 
-        /* styling input */
         input {
             width: 100%;
             padding: 12px;
@@ -75,11 +83,9 @@ if (isset($_POST['register'])) {
             font-size: 14px;
         }
 
-        /* tombol merah  */
         button {
             width: 100%;
-            background-color: #dc3545;
-            /* Merah sesuai login lu */
+            background-color: #ce1212; /* merah sesuai tema skomda lu */
             color: white;
             padding: 12px;
             border: none;
@@ -92,7 +98,7 @@ if (isset($_POST['register'])) {
         }
 
         button:hover {
-            background-color: #c82333;
+            background-color: #a00e0e;
         }
 
         p {
@@ -102,7 +108,7 @@ if (isset($_POST['register'])) {
         }
 
         a {
-            color: #dc3545;
+            color: #ce1212;
             text-decoration: none;
             font-weight: bold;
         }
@@ -116,10 +122,8 @@ if (isset($_POST['register'])) {
         <h2>Kantin Register</h2>
 
         <form method="POST">
-            <input type="text" name="nama" placeholder="Nama Lengkap" required>
             <input type="text" name="username" placeholder="Username" required>
             <input type="password" name="password" placeholder="Password" required>
-            <input type="email" name="email" placeholder="Email" required>
             <button type="submit" name="register">Register</button>
         </form>
 

@@ -6,7 +6,7 @@ include 'includes/header_siswa.php';
 // menghubungkan file ke database
 include 'config/koneksi.php';
 
-// menangkap ID user yang sedang login dari session untuk filter keranjang
+// menangkap id user yang sedang login dari session untuk filter keranjang
 $id_user = $_SESSION['id_user'];
 ?>
 
@@ -21,6 +21,7 @@ $id_user = $_SESSION['id_user'];
                     <th>Harga Satuan</th>
                     <th>Jumlah Beli</th>
                     <th>Subtotal</th>
+                    <th>Opsi</th>
                 </tr>
             </thead>
             <tbody>
@@ -37,7 +38,7 @@ $id_user = $_SESSION['id_user'];
 
                 // melakukan looping untuk menampilkan setiap item di dalam keranjang
                 while ($data = mysqli_fetch_array($sql)) {
-                    // Menghitung subtotal per item (harga x jumlah)
+                    // menghitung subtotal per item (harga x jumlah)
                     $subtotal = $data['harga'] * $data['qty'];
                     // menambahkan subtotal ke variabel total bayar
                     $total += $subtotal;
@@ -47,6 +48,11 @@ $id_user = $_SESSION['id_user'];
                         <td>Rp <?php echo number_format($data['harga'], 0, ',', '.'); ?></td>
                         <td align="center"><?php echo $data['qty']; ?></td>
                         <td>Rp <?php echo number_format($subtotal, 0, ',', '.'); ?></td>
+                        <td align="center">
+                            <a href="hapus_keranjang.php?id=<?php echo $data['id_keranjang']; ?>" 
+                               style="color: #ce1212; font-weight: bold; text-decoration: none;"
+                               onclick="return confirm('yakin mau hapus menu ini?')">Hapus</a>
+                        </td>
                     </tr>
                 <?php
                 }
@@ -55,7 +61,7 @@ $id_user = $_SESSION['id_user'];
             <tfoot>
                 <tr style="font-weight: bold; background-color: #f4f4f4;">
                     <td colspan="3" align="right">Total yang harus dibayar:</td>
-                    <td>Rp <?php echo number_format($total, 0, ',', '.'); ?></td>
+                    <td colspan="2">Rp <?php echo number_format($total, 0, ',', '.'); ?></td>
                 </tr>
             </tfoot>
         </table>
