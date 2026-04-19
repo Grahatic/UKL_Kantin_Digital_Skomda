@@ -1,12 +1,17 @@
 <?php
-// 1. Memulai session & Proteksi Keamanan
+
+// memulai session untuk menyimpan data login pengguna
 if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
 
-// Tendang balik ke login kalau belum masuk sistem
+// memeriksa status login pengguna untuk proteksi halaman
 if (!isset($_SESSION['status']) || $_SESSION['status'] != "login") {
+
+    // mengalihkan halaman ke lokasi yang ditentukan
     header("location:login.php");
+
+    // menghentikan eksekusi script
     exit;
 }
 ?>
@@ -30,7 +35,7 @@ if (!isset($_SESSION['status']) || $_SESSION['status'] != "login") {
         margin-bottom: 5px;
     ">
         <div class="nav-left">
-            <span style="color: #333; font-size: 1rem;">Hi, 
+            <span style="color: #333; font-size: 1rem;">Hi,
                 <strong style="color: #ce1212;">
                     <?php echo $_SESSION['username']; ?>
                 </strong>!
@@ -38,7 +43,11 @@ if (!isset($_SESSION['status']) || $_SESSION['status'] != "login") {
         </div>
 
         <div class="nav-right" style="display: flex; align-items: center; gap: 20px;">
+            <a href="index.php" style="text-decoration: none; color: #333; font-weight: bold; font-size: 0.9rem;">Beranda</a>
+            <a href="riwayat.php" style="text-decoration: none; color: #333; font-weight: bold; font-size: 0.9rem;">Riwayat</a>
+
             <a href="keranjang.php" style="text-decoration: none; font-size: 1.2rem;">🛒</a>
+
             <a href="logout.php" style="
                 background: #ce1212; 
                 color: white; 

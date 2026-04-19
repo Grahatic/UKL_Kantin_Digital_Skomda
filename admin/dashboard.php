@@ -1,21 +1,32 @@
 <?php
+
+// memulai session untuk menyimpan data login pengguna
 session_start();
+
+// menghubungkan file ke database atau komponen lain
 include '../config/koneksi.php';
 
+// memeriksa hak akses pengguna apakah sebagai admin
 if ($_SESSION['role'] != "admin") {
+
+    // mengalihkan halaman ke lokasi yang ditentukan
     header("location:../login.php");
+
+    // menghentikan eksekusi script
     exit;
 }
 ?>
 
 <!DOCTYPE html>
 <html lang="id">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Admin Dashboard - Kantin Skomda</title>
     <link rel="stylesheet" href="../assets/css/style.css">
 </head>
+
 <body>
 
     <nav class="main-nav">
@@ -42,22 +53,37 @@ if ($_SESSION['role'] != "admin") {
                     <th>Gambar</th>
                     <th>Nama Menu</th>
                     <th>Harga</th>
-                    <th>Stok</th> <th>Opsi</th>
+                    <th>Stok</th>
+                    <th>Opsi</th>
                 </tr>
             </thead>
             <tbody>
                 <?php
+
+                // mengambil id stand milik admin dari data session
                 $id_stand_admin = $_SESSION['id_stand'];
+
+                // menyusun instruksi query untuk mengambil data menu berdasarkan id stand
                 $query = "SELECT * FROM menu WHERE id_stand = '$id_stand_admin'";
+
+                // menjalankan instruksi query ke database
                 $ambildata = mysqli_query($conn, $query);
 
+                // inisialisasi variabel nomor urut tabel
                 $no = 1;
+
+                // mengambil data dari hasil query menjadi array
                 while ($data = mysqli_fetch_array($ambildata)) {
-                    // Logika warna stok: kalau 0 jadi merah, kalau dikit jadi kuning
+
+                    // inisialisasi variabel untuk styling warna teks stok
                     $warna_stok = "";
-                    if($data['stok'] == 0) {
+
+                    // validasi jika stok habis untuk memberikan warna merah
+                    if ($data['stok'] == 0) {
                         $warna_stok = "color: red; font-weight: bold;";
-                    } elseif($data['stok'] < 5) {
+
+                        // validasi jika stok menipis untuk memberikan warna oranye
+                    } elseif ($data['stok'] < 5) {
                         $warna_stok = "color: orange; font-weight: bold;";
                     }
                 ?>
@@ -68,10 +94,10 @@ if ($_SESSION['role'] != "admin") {
                         </td>
                         <td><?php echo $data['nama_menu']; ?></td>
                         <td>Rp <?php echo number_format($data['harga'], 0, ',', '.'); ?></td>
-                        
+
                         <td style="<?php echo $warna_stok; ?>">
                             <?php echo $data['stok']; ?> Porsi
-                            <?php if($data['stok'] == 0) echo " (HABIS!)"; ?>
+                            <?php if ($data['stok'] == 0) echo " (HABIS!)"; ?>
                         </td>
 
                         <td>
@@ -85,4 +111,5 @@ if ($_SESSION['role'] != "admin") {
         <br>
     </div>
 </body>
+
 </html>

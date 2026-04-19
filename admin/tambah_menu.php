@@ -1,46 +1,58 @@
 <?php
-// memulai session untuk mengakses data login pengguna
+
+// memulai session untuk menyimpan data login pengguna
 session_start();
 
-// menghubungkan file ke database
+// menghubungkan file ke database atau komponen lain
 include '../config/koneksi.php';
 
-// proteksi: pastikan hanya admin yang bisa akses
+// memeriksa hak akses pengguna apakah sebagai admin
 if ($_SESSION['role'] != "admin") {
+
+    // mengalihkan halaman ke lokasi yang ditentukan
     header("location:../login.php");
+
+    // menghentikan eksekusi script
     exit;
 }
 
-// mengecek apakah tombol 'simpan' sudah diklik
+// memeriksa apakah form tombol simpan telah ditekan
 if (isset($_POST['simpan'])) {
 
-    // mengamankan input teks
+    // mengamankan input teks nama menu dari sql injection
     $nama   = mysqli_real_escape_string($conn, $_POST['nama']);
+
+    // mengambil input harga dari form
     $harga  = $_POST['harga'];
-    
-    // menangkap input stok baru
+
+    // mengambil input stok baru dari form
     $stok   = $_POST['stok'];
 
-    // ambil id_stand otomatis dari session admin yang login
+    // mengambil id stand milik admin dari data session
     $id_stand = $_SESSION['id_stand'];
 
-    // menangkap data gambar
+    // mengambil nama file gambar yang diunggah
     $gambar = $_FILES['foto']['name'];
+
+    // mengambil lokasi sementara file yang diunggah
     $tmp    = $_FILES['foto']['tmp_name'];
 
-    // proses upload file gambar ke folder assets/img
+    // memindahkan file gambar dari lokasi sementara ke direktori tujuan
     if (move_uploaded_file($tmp, "../assets/img/" . $gambar)) {
 
-        // masukkan id_stand DAN stok ke dalam query insert
+        // menjalankan instruksi query ke database untuk memasukkan data menu baru
         $query = mysqli_query($conn, "INSERT INTO menu (nama_menu, harga, stok, gambar, id_stand) 
                                       VALUES ('$nama', '$harga', '$stok', '$gambar', '$id_stand')");
 
+        // validasi keberhasilan proses penyimpanan data ke database
         if ($query) {
             echo "<script>alert('menu berhasil ditambah dengan stok!'); window.location='dashboard.php';</script>";
         } else {
             echo "<script>alert('gagal simpan ke database!');</script>";
         }
     } else {
+
+        // validasi jika proses unggah file gambar ke server gagal
         echo "<script>alert('gagal upload gambar!');</script>";
     }
 }
@@ -48,11 +60,13 @@ if (isset($_POST['simpan'])) {
 
 <!DOCTYPE html>
 <html lang="id">
+
 <head>
     <meta charset="UTF-8">
     <title>Tambah Menu Baru - Admin Skomda</title>
     <link rel="stylesheet" href="../assets/css/style.css">
 </head>
+
 <body>
 
     <nav class="main-nav">
@@ -102,4 +116,5 @@ if (isset($_POST['simpan'])) {
         </div>
     </div>
 </body>
+
 </html>

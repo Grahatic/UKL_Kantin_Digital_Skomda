@@ -1,12 +1,12 @@
 <?php
 
-// memulai session dan proteksi halaman melalui header khusus siswa
+// memanggil header yang sudah berisi session_start dan proteksi akun siswa
 include 'includes/header_siswa.php';
 
 // menghubungkan file ke database
 include 'config/koneksi.php';
 
-// menangkap id user yang sedang login dari session untuk filter keranjang
+// mengambil id user dari data session yang aktif
 $id_user = $_SESSION['id_user'];
 ?>
 
@@ -14,7 +14,7 @@ $id_user = $_SESSION['id_user'];
     <div class="container">
         <h2>Keranjang Belanja Kamu</h2><br>
 
-        <table border="1" cellpadding="10" cellspacing="0" width="100%" style="border-collapse: collapse;">
+        <table border="1" cellpadding="10" cellspacing="0" width="100%" style="border-collapse: collapse; border: 1px solid #ddd;">
             <thead>
                 <tr style="background-color: #ce1212; color: white;">
                     <th>Nama Menu</th>
@@ -27,31 +27,48 @@ $id_user = $_SESSION['id_user'];
             <tbody>
                 <?php
 
-                // mengambil data keranjang yang di-join dengan tabel menu untuk mendapatkan nama dan harga
-                $query = "SELECT keranjang.*, menu.nama_menu, menu.harga 
+                // menyusun instruksi query untuk mengambil data keranjang yang dihubungkan dengan tabel menu
+                $query = "SELECT keranjang.*, menu.nama_menu, menu.harga, menu.stok 
                           FROM keranjang 
                           JOIN menu ON keranjang.id_menu = menu.id_menu 
                           WHERE keranjang.id_user = '$id_user'";
 
+                // menjalankan instruksi query ke database
                 $sql = mysqli_query($conn, $query);
+
+                // inisialisasi variabel total pembayaran akumulatif
                 $total = 0;
 
-                // melakukan looping untuk menampilkan setiap item di dalam keranjang
+                // mengambil data dari hasil query menjadi array
                 while ($data = mysqli_fetch_array($sql)) {
-                    // menghitung subtotal per item (harga x jumlah)
+
+                    // menghitung subtotal berdasarkan harga satuan dikali kuantitas
                     $subtotal = $data['harga'] * $data['qty'];
-                    // menambahkan subtotal ke variabel total bayar
+
+                    // menambahkan subtotal ke dalam variabel total keseluruhan
                     $total += $subtotal;
                 ?>
                     <tr>
                         <td><?php echo $data['nama_menu']; ?></td>
                         <td>Rp <?php echo number_format($data['harga'], 0, ',', '.'); ?></td>
-                        <td align="center"><?php echo $data['qty']; ?></td>
+
+                        <td align="center">
+                            <div style="display: flex; justify-content: center; align-items: center; gap: 10px;">
+                                <a href="update_keranjang.php?id=<?php echo $data['id_keranjang']; ?>&aksi=kurang"
+                                    style="text-decoration: none; background: #eee; color: #333; padding: 2px 10px; border-radius: 4px; border: 1px solid #ccc; font-weight: bold;">-</a>
+
+                                <span style="font-weight: bold;"><?php echo $data['qty']; ?></span>
+
+                                <a href="update_keranjang.php?id=<?php echo $data['id_keranjang']; ?>&aksi=tambah"
+                                    style="text-decoration: none; background: #eee; color: #333; padding: 2px 10px; border-radius: 4px; border: 1px solid #ccc; font-weight: bold;">+</a>
+                            </div>
+                        </td>
+
                         <td>Rp <?php echo number_format($subtotal, 0, ',', '.'); ?></td>
                         <td align="center">
-                            <a href="hapus_keranjang.php?id=<?php echo $data['id_keranjang']; ?>" 
-                               style="color: #ce1212; font-weight: bold; text-decoration: none;"
-                               onclick="return confirm('yakin mau hapus menu ini?')">Hapus</a>
+                            <a href="hapus_keranjang.php?id=<?php echo $data['id_keranjang']; ?>"
+                                style="color: #ce1212; font-weight: bold; text-decoration: none;"
+                                onclick="return confirm('yakin mau hapus menu ini?')">Hapus</a>
                         </td>
                     </tr>
                 <?php
@@ -67,16 +84,24 @@ $id_user = $_SESSION['id_user'];
         </table>
 
         <br>
-        <?php if ($total > 0): ?>
-            <a href="checkout.php" style="background: #ce1212; color: white; padding: 12px 25px; text-decoration: none; border-radius: 5px; float: right; font-weight: bold;">Konfirmasi & Pesan Sekarang</a>
-        <?php else: ?>
-            <p style="color: red; text-align: right; font-style: italic;">Keranjang kosong, silakan pilih menu dulu.</p>
-        <?php endif; ?>
+
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 20px;">
+            <a href="index.php" style="background: #666; color: white; padding: 12px 25px; text-decoration: none; border-radius: 5px; font-weight: bold;">
+                ← Tambah Menu Lain
+            </a>
+
+            <?php if ($total > 0): ?>
+                <a href="checkout.php" onclick="return confirm('Konfirmasi pesanan sekarang?')"
+                    style="background: #ce1212; color: white; padding: 12px 25px; text-decoration: none; border-radius: 5px; font-weight: bold;">
+                    Konfirmasi & Pesan Sekarang
+                </a>
+            <?php else: ?>
+                <p style="color: red; font-style: italic; margin: 0;">Keranjang kosong, silakan pilih menu dulu.</p>
+            <?php endif; ?>
+        </div>
     </div>
 </section>
 
 <?php
-
-// memanggil file footer
-include 'includes/footer.php';
-?>
+// menghubungkan file ke database
+include 'includes/footer.php'; ?>

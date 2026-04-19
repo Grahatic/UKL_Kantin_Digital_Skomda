@@ -15,7 +15,7 @@ body {
   height: 80vh;
   background:
     linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)),
-    url("../img/kantin-bg.jpg"); /* Ganti dengan foto kantin lu */
+    url("../img/kantin-bg.jpg"); /* url img kantin */
   background-size: cover;
   background-position: center;
   display: flex;

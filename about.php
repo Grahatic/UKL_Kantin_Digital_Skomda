@@ -1,6 +1,9 @@
 <?php
- 
-include 'includes/header.php'; ?>
+
+// menghubungkan file ke database
+include 'includes/header.php'; 
+
+?>
 
 <!DOCTYPE html>
 <html lang="id">
@@ -40,7 +43,7 @@ include 'includes/header.php'; ?>
             padding-bottom: 30px;
         }
 
-        /* background header padacard profil */
+        /* background header pada card profil */
         .card-header {
             background: #800000;
             height: 120px;
@@ -179,4 +182,6 @@ include 'includes/header.php'; ?>
 
 </html>
 
-<?php include 'includes/footer.php'; ?>
+<?php
+// menghubungkan file ke databse
+include 'includes/footer.php'; ?>

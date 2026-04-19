@@ -1,5 +1,6 @@
 <?php
-// menghubungkan file kodingan dengan database di folder config
+
+// menghubungkan file kodingan dengan database
 include "config/koneksi.php";
 
 if (isset($_POST['register'])) {
@@ -13,17 +14,21 @@ if (isset($_POST['register'])) {
     $cek_user = mysqli_query($conn, "SELECT * FROM user WHERE username='$username'");
     
     if (mysqli_num_rows($cek_user) > 0) {
+        
         // jika username sudah ada di database
         echo "<script>alert('username sudah ada, cari yang lain!');</script>";
     } else {
+
         // jika username aman, langsung masukkan ke database
         $sql = mysqli_query($conn, "INSERT INTO user (username, password, role) 
                VALUES ('$username', '$password', '$role')");
 
         if ($sql) {
+
             // jika berhasil, tendang ke halaman login
             echo "<script>alert('registrasi berhasil! silakan login.'); location.href='login.php';</script>";
         } else {
+
             // jika gagal karena sistem error
             echo "<script>alert('registrasi gagal!');</script>";
         }
@@ -39,6 +44,7 @@ if (isset($_POST['register'])) {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Register | Kantin Pre-Order Skomda</title>
     <style>
+        
         /* styling dasar buat halaman register */
         body {
             font-family: 'Segoe UI', sans-serif;

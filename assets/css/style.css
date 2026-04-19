@@ -213,6 +213,7 @@ footer {
 }
 
 /*---4. NAVBAR ADMIN---*/
+
 .main-nav {
   display: flex;
   justify-content: space-between;
@@ -270,6 +271,7 @@ footer {
 }
 
 /*---5. FORM TAMBAH/EDIT MENU---*/
+
 .form-card {
   background: white;
   max-width: 600px;
@@ -366,6 +368,7 @@ footer {
 }
 
 /*---6. KATALOG MENU---*/
+
 .main-content {
   padding: 50px 0;
   background-color: #f2f2f2;
@@ -408,16 +411,13 @@ footer {
 
 .menu-image img {
   width: 100%;
-  /* coba naikkan sedikit tingginya biar lebih lega */
   height: 250px;
-  /* tetap pakai cover tapi kita arahkan ke tengah */
   object-fit: cover;
   object-position: center;
-  /* tambahkan transisi halus saat dihover */
   transition: 0.5s;
 }
 
-/* tambahan: kasih sedikit zoom pas card dihover biar kelihatan pro */
+/* zoom pas card dihover */
 .menu-card:hover .menu-image img {
   transform: scale(1.1);
 }
@@ -476,7 +476,7 @@ footer {
   color: white;
 }
 
-/* penyesuaian menu card agar lebih mirip figma */
+/* penyesuaian menu card */
 .menu-card {
   border: none;
   box-shadow: 0 15px 35px rgba(0, 0, 0, 0.05);
