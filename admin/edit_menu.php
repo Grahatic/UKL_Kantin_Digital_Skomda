@@ -1,103 +1,62 @@
 <?php
-
-// memulai session untuk mengakses data login pengguna
 session_start();
-
-// menghubungkan file ke database
 include '../config/koneksi.php';
 
-// proteksi
 if ($_SESSION['role'] != "admin") {
-
-    // arahkan paksa kembali ke halaman login
     header("location:../login.php");
-
-    // menghentikan proses
     exit;
 }
 
-// membersihkan ID dari URL
+$id_stand_admin = $_SESSION['id_stand'];
 $id = mysqli_real_escape_string($conn, $_GET['id']);
 
-// mengambil data menu spesifik berdasarkan ID yang dikirim
-$ambil_data = mysqli_query($conn, "SELECT * FROM menu WHERE id_menu='$id'");
-
-// mmemecah hasil query menjadi array
+$ambil_data = mysqli_query($conn, "SELECT * FROM menu WHERE id_menu='$id' AND id_stand='$id_stand_admin'");
 $d = mysqli_fetch_array($ambil_data);
 
-// cek apakah data ada jika tidak, kembalikan ke dashboard
 if (!$d) {
-
-    // memberikan pesan peringatan jika ID tidak ditemukan
-    echo "<script>alert('Data tidak ditemukan!'); window.location='dashboard.php';</script>";
-
-    // menghentikan proses
+    echo "<script>alert('akses ditolak!'); window.location='dashboard.php';</script>";
     exit;
 }
 
-// Mengecek apakah tombol 'update' sudah diklik
 if (isset($_POST['update'])) {
-
-    // mengamankan input teks
     $nama   = mysqli_real_escape_string($conn, $_POST['nama']);
-
-    // menangkap input harga dari form
     $harga  = $_POST['harga'];
-
-    // menangkap nama file gambar yang diunggah
+    $stok   = $_POST['stok']; // tangkap input stok
     $gambar = $_FILES['foto']['name'];
-
-    // menangkap lokasi sementara file gambar di server
     $tmp    = $_FILES['foto']['tmp_name'];
 
-    // cek apakah admin mengunggah file gambar baru atau tidak
     if ($gambar != "") {
-
-        // proses upload file gambar
         move_uploaded_file($tmp, "../assets/img/" . $gambar);
-
-        // query update yang menyertakan nama file gambar baru
-        $query = "UPDATE menu SET nama_menu='$nama', harga='$harga', gambar='$gambar' WHERE id_menu='$id'";
+        // update termasuk kolom stok
+        $query = "UPDATE menu SET nama_menu='$nama', harga='$harga', stok='$stok', gambar='$gambar' WHERE id_menu='$id' AND id_stand='$id_stand_admin'";
     } else {
-
-        // query update tanpa mengganti gambar
-        $query = "UPDATE menu SET nama_menu='$nama', harga='$harga' WHERE id_menu='$id'";
+        // update tanpa ganti gambar tapi stok tetep diupdate
+        $query = "UPDATE menu SET nama_menu='$nama', harga='$harga', stok='$stok' WHERE id_menu='$id' AND id_stand='$id_stand_admin'";
     }
 
-    // menjalankan perintah update ke database
     $hasil = mysqli_query($conn, $query);
 
-    // memberikan feedback sukses atau gagal kepada user
     if ($hasil) {
-
-        // jika berhasil, munculkan alert dan pindah ke dashboard
-        echo "<script>alert('Data menu berhasil diupdate!'); window.location='dashboard.php';</script>";
+        echo "<script>alert('data menu & stok berhasil diupdate!'); window.location='dashboard.php';</script>";
     } else {
-
-        // jika gagal, munculkan alert error
-        echo "<script>alert('Gagal update menu!');</script>";
+        echo "<script>alert('gagal update menu!');</script>";
     }
 }
 ?>
 
 <!DOCTYPE html>
 <html lang="id">
-
 <head>
     <meta charset="UTF-8">
     <title>Edit Menu - Admin Skomda</title>
     <link rel="stylesheet" href="../assets/css/style.css">
 </head>
-
 <body>
 
     <nav class="main-nav">
-        <div class="nav-brand">
-            <h1>SKOMDA KANTIN</h1>
-        </div>
+        <div class="nav-brand"><h1>SKOMDA KANTIN</h1></div>
         <div class="nav-menu">
             <a href="dashboard.php" class="nav-link">Kelola Menu</a>
-            <span class="admin-name">Admin: <strong><?php echo $_SESSION['username']; ?></strong></span>
             <a href="../logout.php" class="btn-logout">Logout</a>
         </div>
     </nav>
@@ -105,8 +64,7 @@ if (isset($_POST['update'])) {
     <div class="admin-container">
         <div class="form-card">
             <div class="form-header">
-                <h2>Edit Menu</h2>
-                <p>Ubah detail menu sesuai kebutuhan stok atau harga baru.</p>
+                <h2>Edit Menu & Kelola Stok</h2>
             </div>
 
             <form method="POST" enctype="multipart/form-data">
@@ -121,9 +79,13 @@ if (isset($_POST['update'])) {
                 </div>
 
                 <div class="input-group">
+                    <label>Stok Tersedia (Porsi)</label>
+                    <input type="number" name="stok" value="<?php echo $d['stok']; ?>" min="0" required>
+                </div>
+
+                <div class="input-group">
                     <label>Gambar Saat Ini</label>
-                    <img src="../assets/img/<?php echo $d['gambar']; ?>" width="150" height="110" class="img-preview">
-                    <small style="color: #777;">Kosongkan di bawah ini jika tidak ingin mengganti gambar.</small>
+                    <img src="../assets/img/<?php echo $d['gambar']; ?>" width="150" class="img-preview">
                     <input type="file" name="foto" style="margin-top: 10px;">
                 </div>
 
@@ -134,7 +96,5 @@ if (isset($_POST['update'])) {
             </form>
         </div>
     </div>
-
 </body>
-
 </html>

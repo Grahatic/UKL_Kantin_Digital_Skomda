@@ -26,6 +26,7 @@ if (isset($_POST['masuk'])) {
         $_SESSION['id_user']  = $data['id_user'];
         $_SESSION['username'] = $data['username'];
         $_SESSION['role']     = $data['role'];
+        $_SESSION['id_stand']  = $data['id_stand'];
         $_SESSION['status']   = "login";
 
         // arahkan user sesuai denganrole nya

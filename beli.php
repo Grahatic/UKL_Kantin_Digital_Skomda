@@ -1,31 +1,29 @@
 <?php
-
-// memulai session untukk mengakses data login pengguna
 session_start();
-
-// panggil koneksi database
 include 'config/koneksi.php';
 
-// ambil id_menu dari tombol pesan di index.php
-$id_menu = $_GET['id'];
-
-// ambil id_user dari session login
+// Ambil ID Menu
+$id_menu = mysqli_real_escape_string($conn, $_GET['id']);
 $id_user = $_SESSION['id_user'];
-
-// set jumlah beli default adalah 1
 $qty = 1;
 
-// masukkan data ke tabel keranjang
+// --- STEP 1: CEK STOK DI DATABASE (LOGIKA VALIDASI) ---
+$cek_stok = mysqli_query($conn, "SELECT stok FROM menu WHERE id_menu = '$id_menu'");
+$s = mysqli_fetch_array($cek_stok);
+
+if ($s['stok'] <= 0) {
+    // JIKA STOK HABIS: Usir user dengan alert tegas
+    echo "<script>alert('MAAF! Stok baru saja habis. Anda tidak bisa memesan menu ini.'); window.location='index.php';</script>";
+    exit; // Berhenti di sini, jangan lanjut ke query INSERT
+}
+
+// --- STEP 2: LANJUT INSERT JIKA STOK TERSEDIA ---
 $query = "INSERT INTO keranjang (id_user, id_menu, qty) VALUES ('$id_user', '$id_menu', '$qty')";
 $hasil = mysqli_query($conn, $query);
 
-// cek apakah proses berhasil
 if ($hasil) {
-
-    // jika berhasil, lempar user ke halaman keranjang
-    echo "<script>alert('berhasil ditambah ke keranjang'); window.location='keranjang.php';</script>";
+    echo "<script>alert('Berhasil ditambah ke keranjang!'); window.location='keranjang.php';</script>";
 } else {
-
-    // jika gagal, kasih peringatan dan balik ke index
-    echo "<script>alert('gagal menambah pesanan'); window.location='index.php';</script>";
+    echo "<script>alert('Gagal menambah pesanan'); window.location='index.php';</script>";
 }
+?>

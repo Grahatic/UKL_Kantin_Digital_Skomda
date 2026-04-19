@@ -1,18 +1,13 @@
 <?php
-
 // memulai session untuk mengakses data login pengguna
 session_start();
 
 // menghubungkan file ke database
 include '../config/koneksi.php';
 
-// proteksi
+// proteksi: pastikan hanya admin yang bisa akses
 if ($_SESSION['role'] != "admin") {
-
-    // arahkan paksa kembali ke halaman login
     header("location:../login.php");
-
-    // menghentikan proses
     exit;
 }
 
@@ -21,49 +16,43 @@ if (isset($_POST['simpan'])) {
 
     // mengamankan input teks
     $nama   = mysqli_real_escape_string($conn, $_POST['nama']);
-
-    // menangkap input harga dari form
     $harga  = $_POST['harga'];
+    
+    // menangkap input stok baru
+    $stok   = $_POST['stok'];
 
-    // menangkap nama file gambar yang diunggah
+    // ambil id_stand otomatis dari session admin yang login
+    $id_stand = $_SESSION['id_stand'];
+
+    // menangkap data gambar
     $gambar = $_FILES['foto']['name'];
-
-    // menangkap lokasi sementara file gambar di server
     $tmp    = $_FILES['foto']['tmp_name'];
 
     // proses upload file gambar ke folder assets/img
     if (move_uploaded_file($tmp, "../assets/img/" . $gambar)) {
 
-        // menjalankan query untuk menyimpan data menu baru ke database
-        $query = mysqli_query($conn, "INSERT INTO menu (nama_menu, harga, gambar) VALUES ('$nama', '$harga', '$gambar')");
+        // masukkan id_stand DAN stok ke dalam query insert
+        $query = mysqli_query($conn, "INSERT INTO menu (nama_menu, harga, stok, gambar, id_stand) 
+                                      VALUES ('$nama', '$harga', '$stok', '$gambar', '$id_stand')");
 
-        // memberikan feedback
         if ($query) {
-
-            // jika berhasil, munculkan alert dan pindah ke dashboard
-            echo "<script>alert('Menu berhasil ditambah!'); window.location='dashboard.php';</script>";
+            echo "<script>alert('menu berhasil ditambah dengan stok!'); window.location='dashboard.php';</script>";
         } else {
-
-            // jika gagal simpan ke database, munculkan alert error
-            echo "<script>alert('Gagal simpan ke database!');</script>";
+            echo "<script>alert('gagal simpan ke database!');</script>";
         }
     } else {
-
-        // jika gagal upload file ke folder, munculkan alert error
-        echo "<script>alert('Gagal upload gambar!');</script>";
+        echo "<script>alert('gagal upload gambar!');</script>";
     }
 }
 ?>
 
 <!DOCTYPE html>
 <html lang="id">
-
 <head>
     <meta charset="UTF-8">
     <title>Tambah Menu Baru - Admin Skomda</title>
     <link rel="stylesheet" href="../assets/css/style.css">
 </head>
-
 <body>
 
     <nav class="main-nav">
@@ -80,8 +69,8 @@ if (isset($_POST['simpan'])) {
     <div class="admin-container">
         <div class="form-card">
             <div class="form-header">
-                <h2>Tambah Menu Baru</h2>
-                <p>Gunakan gambar rasio 1:1 untuk hasil terbaik di katalog siswa.</p>
+                <h2>Tambah Menu Baru (Opsi Stok Aktif)</h2>
+                <p>Input jumlah porsi yang tersedia hari ini.</p>
             </div>
 
             <form method="POST" enctype="multipart/form-data">
@@ -96,18 +85,21 @@ if (isset($_POST['simpan'])) {
                 </div>
 
                 <div class="input-group">
+                    <label>Stok Awal (Porsi)</label>
+                    <input type="number" name="stok" placeholder="Contoh: 20" min="0" required>
+                </div>
+
+                <div class="input-group">
                     <label>Foto Menu</label>
                     <input type="file" name="foto" required>
                 </div>
 
                 <div class="form-actions">
-                    <button type="submit" name="simpan" class="btn-simpan">Simpan Menu</button>
+                    <button type="submit" name="simpan" class="btn-simpan">Simpan Menu & Stok</button>
                     <a href="dashboard.php" class="btn-kembali">Kembali</a>
                 </div>
             </form>
         </div>
     </div>
-
 </body>
-
 </html>

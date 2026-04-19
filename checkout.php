@@ -1,70 +1,67 @@
 <?php
-
 // memulai session untuk mengakses data login pengguna
 session_start();
 
 // menghubungkan file ke database
 include 'config/koneksi.php';
 
-// menangkap ID user yang sedang login dari session
-$id_user = $_SESSION['id_user'];
+// proteksi: pastikan hanya siswa yang bisa checkout
+if ($_SESSION['role'] != "siswa") {
+    header("location:login.php");
+    exit;
+}
 
-// mengambil tanggal hari ini untuk mencatat waktu transaksi
+$id_user = $_SESSION['id_user'];
 $tgl_transaksi = date("Y-m-d");
 
-// menghitung total belanja di keranjang user saat ini dengan join tabel menu
-$hitung = mysqli_query($conn, "SELECT SUM(menu.harga * keranjang.qty) as total 
-                               FROM keranjang 
-                               JOIN menu ON keranjang.id_menu = menu.id_menu 
-                               WHERE keranjang.id_user = '$id_user'");
+// 1. Ambil data keranjang dan hitung total sekaligus (JOIN tabel menu untuk ambil harga)
+$query_keranjang = "SELECT keranjang.*, menu.harga, menu.stok 
+                    FROM keranjang 
+                    JOIN menu ON keranjang.id_menu = menu.id_menu 
+                    WHERE keranjang.id_user = '$id_user'";
+$isi_keranjang = mysqli_query($conn, $query_keranjang);
 
-// memecah hasil perhitungan total menjadi array
-$r = mysqli_fetch_assoc($hitung);
+// Jika keranjang kosong, jangan lanjut
+if (mysqli_num_rows($isi_keranjang) == 0) {
+    echo "<script>alert('Keranjang belanja anda kosong!'); window.location='index.php';</script>";
+    exit;
+}
 
-// menyimpan hasil total harga ke dalam variabel
-$total_bayar = $r['total'];
+// 2. Hitung Total Bayar
+$total_bayar = 0;
+while ($row = mysqli_fetch_assoc(mysqli_query($conn, $query_keranjang))) {
+    $total_bayar += ($row['harga'] * $row['qty']);
+}
 
-// memasukkan data ke tabel transaksi utama
+// 3. Masukkan ke tabel Transaksi Utama
 $insert_transaksi = mysqli_query($conn, "INSERT INTO transaksi (id_user, tgl_transaksi, total_bayar) 
                                          VALUES ('$id_user', '$tgl_transaksi', '$total_bayar')");
 
-// mengecek apakah proses pembuatan transaksi utama berhasil
 if ($insert_transaksi) {
-
-    // mengambil ID transaksi oleh database
     $id_transaksi_baru = mysqli_insert_id($conn);
 
-    // mengambil semua item dari keranjang untuk dipindahkan ke detail transaksi
-    $isi_keranjang = mysqli_query($conn, "SELECT * FROM keranjang WHERE id_user = '$id_user'");
+    // Ambil ulang data keranjang untuk di-looping ke Detail Transaksi dan Potong Stok
+    $proses_item = mysqli_query($conn, $query_keranjang);
 
-    // melakukan looping untuk memproses setiap item di keranjang
-    while ($item = mysqli_fetch_array($isi_keranjang)) {
-
-        // menangkap ID menu dari item keranjang
+    while ($item = mysqli_fetch_array($proses_item)) {
         $id_m = $item['id_menu'];
-
-        // menangkap jumlah qty dari item keranjang
         $q   = $item['qty'];
+        $sub = $item['harga'] * $q;
 
-        // mengambil harga menu terbaru untuk menghitung subtotal
-        $get_menu = mysqli_query($conn, "SELECT harga FROM menu WHERE id_menu = '$id_m'");
-        $m = mysqli_fetch_assoc($get_menu);
-
-        // menghitung harga per item dikali jumlah beli
-        $sub = $m['harga'] * $q;
-
-        // memasukkan rincian item ke tabel detail transaksi
+        // A. Masukkan ke Tabel Detail Transaksi
         mysqli_query($conn, "INSERT INTO detail_transaksi (id_transaksi, id_menu, qty, subtotal) 
                              VALUES ('$id_transaksi_baru', '$id_m', '$q', '$sub')");
+
+        // B. LOGIKA POTONG STOK (INTI PERUBAHAN)
+        // Mengurangi stok di tabel menu berdasarkan jumlah yang dibeli
+        mysqli_query($conn, "UPDATE menu SET stok = stok - $q WHERE id_menu = '$id_m'");
     }
 
-    // mengosongkan keranjang user karena seluruh item sudah berhasil dipesan
+    // 4. Kosongkan keranjang user setelah semua proses selesai
     mysqli_query($conn, "DELETE FROM keranjang WHERE id_user = '$id_user'");
 
-    // memberikan feedback sukses dan mengarahkan user kembali ke halaman utama
-    echo "<script>alert('pesanan berhasil dikonfirmasi!'); window.location='index.php';</script>";
+    echo "<script>alert('PESANAN BERHASIL! Stok kantin otomatis terupdate.'); window.location='index.php';</script>";
 } else {
-
-    // memberikan feedback jika proses transaksi gagal dan kembali ke keranjang
-    echo "<script>alert('gagal melakukan checkout'); window.location='keranjang.php';</script>";
+    echo "<script>alert('Gagal melakukan checkout, cek koneksi database!'); window.location='keranjang.php';</script>";
 }
+?>
