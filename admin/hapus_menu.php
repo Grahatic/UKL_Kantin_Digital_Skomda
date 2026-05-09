@@ -4,7 +4,13 @@
 session_start();
 
 // menghubungkan file ke database atau komponen lain
-include '../config/koneksi.php';
+require_once __DIR__ . '/../config/koneksi.php';
+if (!isset($conn) && isset($koneksi)) {
+    $conn = $koneksi;
+}
+if (!isset($conn)) {
+    die('Koneksi database tidak ditemukan.');
+}
 
 // memeriksa hak akses pengguna apakah sebagai admin
 if ($_SESSION['role'] != "admin") {

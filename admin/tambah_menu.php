@@ -4,7 +4,16 @@
 session_start();
 
 // menghubungkan file ke database atau komponen lain
-include '../config/koneksi.php';
+include_once '../config/koneksi.php';
+
+// jika konfigurasi koneksi menggunakan variabel lain, gunakan sebagai fallback
+if (!isset($conn)) {
+    if (isset($koneksi)) {
+        $conn = $koneksi;
+    } else {
+        die("Koneksi database tidak tersedia.");
+    }
+}
 
 // memeriksa hak akses pengguna apakah sebagai admin
 if ($_SESSION['role'] != "admin") {
@@ -19,8 +28,8 @@ if ($_SESSION['role'] != "admin") {
 // memeriksa apakah form tombol simpan telah ditekan
 if (isset($_POST['simpan'])) {
 
-    // mengamankan input teks nama menu dari sql injection
-    $nama   = mysqli_real_escape_string($conn, $_POST['nama']);
+    // mengambil input teks nama menu dari form
+    $nama   = $_POST['nama'];
 
     // mengambil input harga dari form
     $harga  = $_POST['harga'];
@@ -40,9 +49,10 @@ if (isset($_POST['simpan'])) {
     // memindahkan file gambar dari lokasi sementara ke direktori tujuan
     if (move_uploaded_file($tmp, "../assets/img/" . $gambar)) {
 
-        // menjalankan instruksi query ke database untuk memasukkan data menu baru
-        $query = mysqli_query($conn, "INSERT INTO menu (nama_menu, harga, stok, gambar, id_stand) 
-                                      VALUES ('$nama', '$harga', '$stok', '$gambar', '$id_stand')");
+        // menjalankan instruksi query ke database untuk memasukkan data menu baru dengan prepared statement
+        $stmt = $conn->prepare("INSERT INTO menu (nama_menu, harga, stok, gambar, id_stand) VALUES (?, ?, ?, ?, ?)");
+        $stmt->bind_param("siiis", $nama, $harga, $stok, $gambar, $id_stand);
+        $query = $stmt->execute();
 
         // validasi keberhasilan proses penyimpanan data ke database
         if ($query) {

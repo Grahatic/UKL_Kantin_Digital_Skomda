@@ -24,8 +24,10 @@ $id_s = $_SESSION['id_stand'];
     <link rel="stylesheet" href="../assets/css/style.css">
     <style>
         /* CSS INTERNAL UNTUK PESANAN MASUK */
-        body { background-color: #f4f4f4; }
-        
+        body {
+            background-color: #f4f4f4;
+        }
+
         .status-badge {
             padding: 5px 12px;
             border-radius: 20px;
@@ -33,9 +35,19 @@ $id_s = $_SESSION['id_stand'];
             font-weight: bold;
             text-transform: uppercase;
         }
-        .status-pending { background-color: #ffe5e5; color: #d9534f; border: 1px solid #d9534f; }
-        .status-selesai { background-color: #e5f9e5; color: #28a745; border: 1px solid #28a745; }
-        
+
+        .status-pending {
+            background-color: #ffe5e5;
+            color: #d9534f;
+            border: 1px solid #d9534f;
+        }
+
+        .status-selesai {
+            background-color: #e5f9e5;
+            color: #28a745;
+            border: 1px solid #28a745;
+        }
+
         .btn-selesai {
             background-color: #28a745;
             color: white;
@@ -45,8 +57,11 @@ $id_s = $_SESSION['id_stand'];
             font-size: 13px;
             transition: 0.3s;
         }
-        .btn-selesai:hover { background-color: #218838; }
-        
+
+        .btn-selesai:hover {
+            background-color: #218838;
+        }
+
         .kembali-link {
             display: inline-block;
             margin-bottom: 15px;
@@ -54,9 +69,17 @@ $id_s = $_SESSION['id_stand'];
             text-decoration: none;
             font-weight: bold;
         }
-        
-        .admin-table th { background-color: #ce1212; color: white; }
-        .no-data { text-align: center; padding: 20px; color: #888; }
+
+        .admin-table th {
+            background-color: #ce1212;
+            color: white;
+        }
+
+        .no-data {
+            text-align: center;
+            padding: 20px;
+            color: #888;
+        }
     </style>
 </head>
 
@@ -103,6 +126,11 @@ $id_s = $_SESSION['id_stand'];
                           WHERE m.id_stand = '$id_s'
                           ORDER BY t.id_transaksi DESC";
 
+                $conn = new mysqli('localhost', 'root', '', 'ukl_kantin');
+                if ($conn->connect_error) {
+                    die("Connection failed: " . $conn->connect_error);
+                }
+
                 $sql = mysqli_query($conn, $query);
 
                 if (mysqli_num_rows($sql) == 0) {
@@ -111,34 +139,35 @@ $id_s = $_SESSION['id_stand'];
 
                 while ($d = mysqli_fetch_array($sql)) {
                 ?>
-                <tr>
-                    <td><strong>#<?php echo $d['id_transaksi']; ?></strong></td>
-                    <td><?php echo date('d M Y', strtotime($d['tgl_transaksi'])); ?></td>
-                    <td><?php echo $d['username']; ?></td>
-                    <td>Rp <?php echo number_format($d['total_bayar'], 0, ',', '.'); ?></td>
-                    <td>
-                        <?php if ($d['status'] == 'Pending') : ?>
-                            <span class="status-badge status-pending">Menunggu</span>
-                        <?php else : ?>
-                            <span class="status-badge status-selesai">Selesai</span>
-                        <?php endif; ?>
-                    </td>
-                    <td>
-                        <?php if ($d['status'] == 'Pending') : ?>
-                            <a href="update_status.php?id=<?php echo $d['id_transaksi']; ?>" 
-                               class="btn-selesai" 
-                               onclick="return confirm('Yakin pesanan ini sudah selesai?')">
-                               Selesaikan
-                            </a>
-                        <?php else : ?>
-                            <span style="color: #bbb;">Sudah Diproses</span>
-                        <?php endif; ?>
-                    </td>
-                </tr>
+                    <tr>
+                        <td><strong>#<?php echo $d['id_transaksi']; ?></strong></td>
+                        <td><?php echo date('d M Y', strtotime($d['tgl_transaksi'])); ?></td>
+                        <td><?php echo $d['username']; ?></td>
+                        <td>Rp <?php echo number_format($d['total_bayar'], 0, ',', '.'); ?></td>
+                        <td>
+                            <?php if ($d['status'] == 'Pending') : ?>
+                                <span class="status-badge status-pending">Menunggu</span>
+                            <?php else : ?>
+                                <span class="status-badge status-selesai">Selesai</span>
+                            <?php endif; ?>
+                        </td>
+                        <td>
+                            <?php if ($d['status'] == 'Pending') : ?>
+                                <a href="update_status.php?id=<?php echo $d['id_transaksi']; ?>"
+                                    class="btn-selesai"
+                                    onclick="return confirm('Yakin pesanan ini sudah selesai?')">
+                                    Selesaikan
+                                </a>
+                            <?php else : ?>
+                                <span style="color: #bbb;">Sudah Diproses</span>
+                            <?php endif; ?>
+                        </td>
+                    </tr>
                 <?php } ?>
             </tbody>
         </table>
     </div>
 
 </body>
+
 </html>

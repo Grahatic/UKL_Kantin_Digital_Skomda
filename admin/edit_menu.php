@@ -6,6 +6,17 @@ session_start();
 // menghubungkan file ke database atau komponen lain
 include '../config/koneksi.php';
 
+// jika file koneksi menggunakan variabel berbeda, samakan dengan $conn
+if (!isset($conn) && isset($koneksi)) {
+    $conn = $koneksi;
+}
+
+// pastikan koneksi database tersedia sebelum digunakan
+if (!isset($conn) || !$conn) {
+    echo "<script>alert('gagal koneksi database!'); window.location='../login.php';</script>";
+    exit;
+}
+
 // memeriksa hak akses pengguna apakah sebagai admin
 if ($_SESSION['role'] != "admin") {
 
@@ -20,7 +31,7 @@ if ($_SESSION['role'] != "admin") {
 $id_stand_admin = $_SESSION['id_stand'];
 
 // mengambil id menu dari parameter url dan mengamankan input dari sql injection
-$id = mysqli_real_escape_string($conn, $_GET['id']);
+$id = isset($_GET['id']) ? mysqli_real_escape_string($conn, $_GET['id']) : '';
 
 // menjalankan instruksi query ke database untuk mengambil data menu berdasarkan id dan id stand
 $ambil_data = mysqli_query($conn, "SELECT * FROM menu WHERE id_menu='$id' AND id_stand='$id_stand_admin'");

@@ -1,11 +1,20 @@
 <?php
 session_start();
-include '../config/koneksi.php';
+require_once __DIR__ . '/../config/koneksi.php';
+if (!isset($conn) && isset($koneksi)) {
+    $conn = $koneksi;
+}
+if (!isset($conn)) {
+    echo "<h1 style='color:red;'>MASALAH KETEMU: Koneksi database tidak tersedia!</h1>";
+    exit;
+}
 
 // cek session
 if (!isset($_SESSION['id_stand'])) {
     echo "<h1 style='color:red;'>MASALAH KETEMU: Lu belum login atau session id_stand kosong!</h1>";
-    echo "Isi session lu saat ini: <pre>"; print_r($_SESSION); echo "</pre>";
+    echo "Isi session lu saat ini: <pre>";
+    print_r($_SESSION);
+    echo "</pre>";
     exit;
 }
 
@@ -30,17 +39,17 @@ $sql = mysqli_query($conn, $query);
         <th>Total</th>
         <th>Status</th>
     </tr>
-    <?php 
-    if(mysqli_num_rows($sql) == 0) {
+    <?php
+    if (mysqli_num_rows($sql) == 0) {
         echo "<tr><td colspan='4'>Database lu ada isinya, tapi query ini nggak nemu hasil yang cocok.</td></tr>";
     }
-    while($d = mysqli_fetch_array($sql)){ 
+    while ($d = mysqli_fetch_array($sql)) {
     ?>
-    <tr>
-        <td><?php echo $d['id_transaksi']; ?></td>
-        <td><?php echo $d['username']; ?></td>
-        <td><?php echo $d['total_bayar']; ?></td>
-        <td><?php echo $d['status']; ?></td>
-    </tr>
+        <tr>
+            <td><?php echo $d['id_transaksi']; ?></td>
+            <td><?php echo $d['username']; ?></td>
+            <td><?php echo $d['total_bayar']; ?></td>
+            <td><?php echo $d['status']; ?></td>
+        </tr>
     <?php } ?>
 </table>

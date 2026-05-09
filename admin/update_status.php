@@ -1,9 +1,17 @@
 <?php
 session_start();
-include '../config/koneksi.php';
+require_once __DIR__ . '/../config/koneksi.php';
+
+if (!isset($conn) && isset($koneksi)) {
+    $conn = $koneksi;
+}
+
+if (!isset($conn)) {
+    die('Database connection not available.');
+}
 
 // mengammbil id 
-$id = $_GET['id'];
+$id = isset($_GET['id']) ? $_GET['id'] : null;
 
 if (isset($id)) {
 
@@ -21,4 +29,3 @@ if (isset($id)) {
 } else {
     header("location:pesanan_masuk.php");
 }
-?>
