@@ -4,7 +4,7 @@
 session_start();
 
 // menghubungkan file ke database atau komponen lain
-include_once '../config/koneksi.php';
+include '../config/koneksi.php';
 
 // jika konfigurasi koneksi menggunakan variabel lain, gunakan sebagai fallback
 if (!isset($conn)) {

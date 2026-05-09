@@ -126,7 +126,7 @@ $id_s = $_SESSION['id_stand'];
                           WHERE m.id_stand = '$id_s'
                           ORDER BY t.id_transaksi DESC";
 
-                $conn = new mysqli('localhost', 'root', '', 'ukl_kantin');
+                $conn = new mysqli('localhost', 'root', '', 'db_ukl_kantin');
                 if ($conn->connect_error) {
                     die("Connection failed: " . $conn->connect_error);
                 }

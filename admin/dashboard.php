@@ -4,7 +4,7 @@
 session_start();
 
 // menghubungkan file ke database atau komponen lain
-require_once __DIR__ . '/../config/koneksi.php';
+include '../config/koneksi.php';
 
 // memeriksa koneksi database
 if (!isset($conn) || !$conn) {

@@ -1,6 +1,6 @@
 <?php
 session_start();
-require_once __DIR__ . '/../config/koneksi.php';
+include '../config/koneksi.php';
 
 if (!isset($conn) && isset($koneksi)) {
     $conn = $koneksi;
