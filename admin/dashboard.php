@@ -37,7 +37,7 @@ if ($_SESSION['role'] != "admin") {
             <a href="dashboard.php" class="nav-link">Kelola Menu</a>
             <a href="pesanan_masuk.php" class="nav-link" style="background-color: #ce1212; padding: 5px 10px; border-radius: 4px;"> Pesanan Masuk</a>
             <a href="laporan.php" class="nav-link">Laporan</a>
-            
+
             <span class="admin-name">Admin: <strong><?php echo $_SESSION['username']; ?></strong></span>
             <a href="../logout.php" class="btn-logout">Logout</a>
         </div>

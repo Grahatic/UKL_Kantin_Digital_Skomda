@@ -30,7 +30,11 @@ if (isset($_POST['masuk'])) {
         $_SESSION['status']   = "login";
 
         // arahkan user sesuai denganrole nya
-        if ($data['role'] == "admin") {
+        // seleksi jalur login buat tiga role berbeda
+        if ($data['role'] == "super_admin") {
+            // arahkan super admin ke folder khusus manajemen seluruh kantin
+            echo "<script>alert('selamat datang super admin!'); window.location='super_admin/dashboard.php';</script>";
+        } else if ($data['role'] == "admin") {
             echo "<script>alert('selamat datang admin!'); window.location='admin/dashboard.php';</script>";
         } else {
             echo "<script>alert('selamat datang siswa!'); window.location='index.php';</script>";

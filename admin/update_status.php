@@ -2,10 +2,11 @@
 session_start();
 include '../config/koneksi.php';
 
-// mengammbil id dari url
+// mengammbil id 
 $id = $_GET['id'];
 
 if (isset($id)) {
+
     // jalankan update status
     $query = "UPDATE transaksi SET status = 'Selesai' WHERE id_transaksi = '$id'";
     $update = mysqli_query($conn, $query);
