@@ -91,7 +91,7 @@ $id_user = $_SESSION['id_user'];
             </a>
 
             <?php if ($total > 0): ?>
-                <a href="checkout.php" onclick="return confirm('Konfirmasi pesanan sekarang?')"
+                <a href="proses_pesanan.php" onclick="return confirm('Konfirmasi pesanan sekarang?')"
                     style="background: #ce1212; color: white; padding: 12px 25px; text-decoration: none; border-radius: 5px; font-weight: bold;">
                     Konfirmasi & Pesan Sekarang
                 </a>
@@ -103,5 +103,6 @@ $id_user = $_SESSION['id_user'];
 </section>
 
 <?php
+
 // menghubungkan file ke database
 include 'includes/footer.php'; ?>
